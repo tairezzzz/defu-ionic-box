@@ -1,0 +1,75 @@
+
+/**
+ * Slide Box
+ * --------------------------------------------------
+ */
+
+.slider {
+  overflow: hidden;
+}
+
+.slider-slides {
+  width: 100%;
+  @include translate3d(0,0,0);
+  &.transition {
+    -webkit-transition: linear -webkit-transform;
+    transition: linear transform;
+  }
+}
+
+.slider-slide {
+  width: 100%;
+  height: 100%;
+  &:not([slide-display]) {
+    display: none;
+  }
+  &[slide-display] {
+    display: inline-block;
+  }
+  &[slide-display="selected"] {
+  }
+  &[slide-display="previous"] {
+    position: absolute;
+    left: -100%;
+  }
+  &[slide-display="next"] {
+    position: absolute;
+    left: 100%;
+  }
+}
+
+.slider-slide-image {
+  > img {
+    width: 100%;
+  }
+}
+
+.slider-pager {
+  position: absolute;
+  bottom: 20px;
+  z-index: $z-index-slider-pager;
+  width: 100%;
+  height: 15px;
+  text-align: center;
+  z-index: 2;
+
+  @include display-flex();
+  @include align-items(center);
+  @include justify-content(center);
+
+  .slider-pager-page {
+    margin: 0px 3px;
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    background-color: black;
+    text-decoration: none;
+
+    opacity: 0.3;
+
+    &.active {
+      @include transition(opacity 0.4s ease-in);
+      opacity: 1;
+    }
+  }
+}
