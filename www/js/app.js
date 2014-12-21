@@ -111,7 +111,8 @@ angular.module('Defu', ['ionic', 'config', 'Defu.controllers'])
                                     "id": 'r' + region_counter,
                                     "name": d.properties.name,
                                     "invaderVisible": false,
-                                    "captured": false
+                                    "defenderVisible": false,
+                                    "captured": false 
                                 });
 
                                 return 'r' + region_counter;
@@ -182,6 +183,9 @@ angular.module('Defu', ['ionic', 'config', 'Defu.controllers'])
                                 var flag = document.getElementById('f' + j);
                                 flag.style.top = (top + height / 2 - invaderRectHeight / 2) + 'px';
                                 flag.style.left = (left + width / 2 - invaderRectWidth / 2) + 'px';
+                                var defender = document.getElementById('d' + j);
+                                defender.style.top = (top + height / 2 - invaderRectHeight / 2) + 'px';
+                                defender.style.left = (left + width / 2 - invaderRectWidth / 2) + 'px';
                             }
                         }, 600)
                     });
@@ -205,7 +209,7 @@ angular.module('Defu', ['ionic', 'config', 'Defu.controllers'])
                     }
                 }
             }
-                }])
+}])
     .directive('invader', ['$window', '$timeout', '$ionicGesture',
     function ($window, $timeout, $ionicGesture) {
             return {
@@ -220,19 +224,45 @@ angular.module('Defu', ['ionic', 'config', 'Defu.controllers'])
                         return element.hasClass('ng-hide')
                     }, function () {
                         if (!element.hasClass('ng-hide')) {
-                            if (!element.hasClass('init')) {
-                                scope.timer = $timeout(function () {
-                                    scope.$root.ukraine[element.attr('id').split('i').pop()].invaderVisible = false;
-                                    scope.$root.ukraine[element.attr('id').split('i').pop()].captured = true;
-                                }, 2000);
-                            } else element.removeClass('init');
+                            scope.timer = $timeout(function () {
+                                scope.$root.ukraine[element.attr('id').split('i').pop()].invaderVisible = false;
+                                scope.$root.ukraine[element.attr('id').split('i').pop()].captured = true;
+                            }, 2000);
                         }
                     });
                     $ionicGesture.on('tap', function () {
+                        $timeout.cancel(scope.timer);
                         scope.$root.ukraine[element.attr('id').split('i').pop()].invaderVisible = false;
                         scope.$root.score = scope.$root.score + 10;
-                        scope.$root.showInvader;
+                        scope.$root.showInvader();
+                    }, element);
+                }
+            }
+}])
+    .directive('defender', ['$window', '$timeout', '$ionicGesture',
+    function ($window, $timeout, $ionicGesture) {
+            return {
+                template: '<a data-instantActivate class="circle"><i class="icon ion-person-stalker"></a>',
+                restrict: 'AE',
+                scope: {
+                    data: '=',
+                    label: '@'
+                },
+                link: function (scope, element, attr) {
+                    scope.$watch(function () {
+                        return element.hasClass('ng-hide')
+                    }, function () {
+                        if (!element.hasClass('ng-hide')) {
+                            scope.timer = $timeout(function () {
+                                scope.$root.ukraine[element.attr('id').split('d').pop()].defenderVisible = false;
+                            }, 2000);
+                        }
+                    });
+                    $ionicGesture.on('tap', function () {
                         $timeout.cancel(scope.timer);
+                        scope.$root.ukraine[element.attr('id').split('d').pop()].defenderVisible = false;
+                        scope.$root.score = scope.$root.score - 5;
+                        scope.$root.showDefender(); 
                     }, element);
                 }
             }

@@ -13,7 +13,6 @@ angular.module('Defu.controllers', [])
     $scope.previous = function () {
         $ionicSlideBoxDelegate.previous();
     };
-
     // Called each time the slide changes
     $scope.slideChanged = function (index) {
         $scope.slideIndex = index;
@@ -21,33 +20,45 @@ angular.module('Defu.controllers', [])
 })
 
 .controller('MainCtrl', function ($scope, $state, $interval, $ionicModal) {
-    $scope.regionsRemainsToGameOver = 24;
+    $scope.regionsRemainsToGameOver = 4;
     $scope.showInvaderInterval = 1000;
+    $scope.showDefenderInterval = 3000;
     $scope.showInvader = $interval(function () {
-        var ind = findInvader();
+        var ind = $scope.findFreeRegion();
         $scope.ukraine[ind].invaderVisible = true;
     }, $scope.showInvaderInterval);
+    $scope.showDefender = $interval(function () {
+        var ind = $scope.findFreeRegion();
+        $scope.ukraine[ind].defenderVisible = true;
+    }, $scope.showDefenderInterval);
     $scope.gameOver = function () {
-        console.log('Game Over')
-        $scope.openModal;
-        $interval.cancel($scope.showInvader);
+        $scope.openModal();
+        if (angular.isDefined($scope.showInvader)) {
+            $interval.cancel($scope.showInvader);
+            $scope.showInvader = undefined;
+            $interval.cancel($scope.showDefender);
+            $scope.showDefender = undefined;
+        }
     };
-
-    function findInvader() {
+    $scope.findFreeRegion = function () {
         var free_regions = [];
         angular.forEach($scope.ukraine, function (value, key) {
-            if (value.invaderVisible === false && value.captured === false) {
+            if (value.invaderVisible === false && value.captured === false && value.defenderVisible == false) {
                 free_regions.push(key);
             }
         });
         if (free_regions.length < $scope.regionsRemainsToGameOver) {
-            $scope.gameOver;
+            $scope.gameOver();
         } else {
             var random = new Random();
             var ind = random.integer(0, free_regions.length - 1);
             if ($scope.ukraine[free_regions[ind]].invaderVisible === false)
                 return free_regions[ind];
         }
+    };
+    $scope.startApp = function () {
+        $state.go('main');
+        $scope.closeModal();
     };
     $scope.toIntro = function () {
         $state.go('intro');

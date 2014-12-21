@@ -68,9 +68,19 @@ invader {
     position: absolute;
     top: 1%;
     left: 1%;
-    font-size: 8vh;
-    width: 10vh;
-    height: 10vh;
+    font-size: 14vh;
+    width: 16vh;
+    height: 16vh;
+    text-align: center;
+    margin-top: 1vh;
+}
+defender {
+    position: absolute;
+    top: 1%;
+    left: 1%;
+    font-size: 14vh;
+    width: 16vh;
+    height: 16vh;
     text-align: center;
     margin-top: 1vh;
 }
@@ -80,19 +90,28 @@ invader {
     top: 1%;
     left: 1%;
     font-size: 8vh;
-    width: 10vh;
-    height: 10vh;
+    width: 16vh;
+    height: 16vh;
     text-align: center;
     margin-top: 1vh;
 }
 .circle {
-    width: 8h;
-    height: 8vh;
+    width: 16vh;
+    height: 16vh;
     background: red;
-    -moz-border-radius: 5vh;
-    -webkit-border-radius: 5vh;
-    border-radius: 5vh;
+    -moz-border-radius: 8vh;
+    -webkit-border-radius: 8vh;
+    border-radius: 8vh;
 }
+defender .circle {
+    width: 16vh;
+    height: 16vh;
+    background: green;
+    -moz-border-radius: 8vh;
+    -webkit-border-radius: 8vh;
+    border-radius: 8vh;
+}
+/*
 .invader-show-hide {
     -webkit-transition: all linear 0.5s;
     transition: all linear 0.5s;
@@ -100,6 +119,14 @@ invader {
 .invader-show-hide.ng-hide {
     opacity: 0;
 }
+.defender-show-hide {
+    -webkit-transition: all linear 0.5s;
+    transition: all linear 0.5s;
+}
+.defender-show-hide.ng-hide {
+    opacity: 0;
+}
+*/
 .invader-flag {
     width:  10vh;
     height: 6vh;
@@ -108,4 +135,7 @@ invader {
     left: 2%;
     background-image: url(/img/125px-Flag_of_Russia.svg.png);
     background-size: contain;
+}
+.center{
+     text-align:center;
 }
